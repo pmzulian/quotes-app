@@ -16,9 +16,10 @@ export async function createQuotesTable(): Promise<void> {
     if (!hasTable) {
       console.log('Creating "quotes" table...');
       await db.schema.createTable('quotes', (table) => {
-        table.string('id', 36).primary() // String UUID
-        // table.increments('id').primary();
+        // table.string('id', 36).primary() // String UUID
+        table.increments('id').primary();
         table.string('description', 255).notNullable();
+        table.string('author', 100).notNullable();
         table.boolean('favorite').notNullable().defaultTo(false);
         table.timestamps(true, true);
       });

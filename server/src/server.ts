@@ -2,6 +2,7 @@ import express from 'express';
 import cors from "cors";
 import dotenv from 'dotenv';
 import { db, createQuotesTable } from './database/knex';
+import quoteRoutes from './routes/routes';
 
 const app = express();
 dotenv.config();
@@ -10,6 +11,7 @@ const puerto = process.env.PORT || 8080;
 app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
+app.use(quoteRoutes);
 
 // Route to test database connection
 app.get('/database', async (req, res) => {
@@ -26,13 +28,13 @@ async function startServer() {
   await createQuotesTable();
 
   app
-    .listen(puerto, () => console.log(`Escuchando peticiones puerto localhost ${puerto}`))
+    .listen(puerto, () => console.log(`Escuchando peticiones puerto http://localhost:${puerto}/database`))
     .on("error", error => console.log(`Error en servidor ${error}`))
 }
 
 startServer();
 
-app.get("/api/listAll", (req, res) => {
+/* app.get("/api/listAll", (req, res) => {
 
 })
 
@@ -56,4 +58,4 @@ app.delete("/api/:id", (req, res) => {
     id: req.params.id,
     mensaje: req.body.mensaje
   })
-})
+}) */
