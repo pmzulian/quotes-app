@@ -53,8 +53,8 @@ function App() {
           <h1 className="app-title" style={{ textAlign: 'center', margin: 0 }}>Quotes</h1>
           <NewQuoteForm />
           <Searcher />
-          <div className="alert-container" style={{ display: 'flex', justifyContent: 'center' }}>
-            <div className="alert-wrapper" style={{ width: '50%' }}>
+          <div className="alert-container">
+            <div className="alert-wrapper">
               {isLoading && (
                 <div className="alert alert-info">
                   <span className="alert-icon">ℹ️</span>
