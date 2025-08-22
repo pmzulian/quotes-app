@@ -14,3 +14,48 @@ This command will veriry if the database exists and proceed to create the table 
 ```bash
 npm run dev;
 ```
+
+### Backend endpoints
+
+The API provides the following endpoints:
+
+1. GET ->  `/api/listAll` -> Retrieve all quotes from the database
+2. POST -> `/api/addQuote` -> Create a new quote. Requires JSON body with `description`, `author` and optional `favorite`
+3. PUT -> `/api/:id` -> Update an existing quote by ID. Requires JSON body with fields to update
+4. DELETE -> `/api/:id` -> Delete a quote by ID
+
+#### Example Requests
+
+**Get all quotes**
+```bash
+GET http://localhost:4000/api/listAll
+```
+
+**Add new quote**
+```bash
+POST http://localhost:4000/api/addQuote
+Content-Type: application/json
+
+{
+  "description": "Your quote text",
+  "author": "Quote Author",
+  "favorite": false
+}
+```
+
+**Update quote**
+```bash
+PUT http://localhost:4000/api/1
+Content-Type: application/json
+
+{
+  "description": "Updated quote text",
+  "author": "Updated Author",
+  "favorite": true
+}
+```
+
+**Delete quote**
+```bash
+DELETE http://localhost:4000/api/1
+```

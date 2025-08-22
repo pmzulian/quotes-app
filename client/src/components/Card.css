@@ -1,0 +1,69 @@
+.Card {
+  height: 200px;
+  display: flex;
+  flex-direction: column;
+  background-color: #1f1f1f;
+}
+
+.Card .ant-card-head {
+  padding: 0 12px;
+  min-height: 8rem;
+  border-bottom: 1px solid #303030;
+}
+
+.Card .ant-card-head-title {
+  white-space: normal;
+  padding: 12px 0;
+  color: #ffffff;
+  font-size: 14px;
+  display: -webkit-box;
+  /* -webkit-line-clamp: 4; */
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.Card .ant-card-body {
+  padding: 12px;
+  flex-grow: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+}
+
+.Card .ant-card-meta {
+  margin: 0;
+}
+
+.Card .ant-card-extra {
+  padding: 0;
+  margin: 0;
+}
+
+.Card .delete-icon:hover {
+  color: #da0b0b;
+  background-color: #da0b0b;
+}
+
+.delete-button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 8px;
+  border: 1px solid #da0b0b;
+  border-radius: 6px;
+  transition: all 0.3s ease;
+}
+
+.delete-icon {
+  color: #ff4d4f;
+  transition: all 0.3s ease;
+}
+
+.delete-button:hover {
+  background-color: #da0b0b;
+}
+
+.delete-button:hover .delete-icon {
+  color: #fff;
+}
