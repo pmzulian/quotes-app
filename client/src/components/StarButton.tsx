@@ -1,8 +1,6 @@
 import { memo } from "react";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { updateFavorite } from "../service";
-import { Button, message } from "antd";
-import { StarFilled, StarOutlined } from "@ant-design/icons";
 
 interface StarButtonProps {
   id: number;
@@ -11,24 +9,45 @@ interface StarButtonProps {
 
 export const StarButton: React.FC<StarButtonProps> = memo(({ id, isFavorite }) => {
   const queryClient = useQueryClient();
-  const icon = isFavorite ? <StarFilled /> : <StarOutlined />;
+  const icon = isFavorite ? "⭐" : "☆";
 
   const { mutate: handleFavorite } = useMutation({
     mutationFn: () => updateFavorite(id, isFavorite),
     onSuccess: async () => {
-      message.success("Favorite status updated");
+      // Fix: Custom toast can be implemented later
+      console.log("Favorite status updated");
       await queryClient.invalidateQueries({ queryKey: ["quotes"] });
     },
     onError: () => {
-      message.error("Failed to update favorite status");
+      // Fix: Custom toast can be implemented later
+      console.error("Failed to update favorite status");
     },
   });
 
   return (
-    <Button
-      icon={icon}
+    <button
+      className="star-button"
       onClick={() => handleFavorite()}
-    />
+      style={{
+        background: 'none',
+        border: 'none',
+        cursor: 'pointer',
+        fontSize: '18px',
+        padding: '8px',
+        borderRadius: '6px',
+        transition: 'all 0.3s ease',
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center'
+      }}
+      onMouseEnter={(e) => {
+        e.currentTarget.style.backgroundColor = '#f0f0f0';
+      }}
+      onMouseLeave={(e) => {
+        e.currentTarget.style.backgroundColor = 'transparent';
+      }}
+    >
+      {icon}
+    </button>
   );
-}
-);
+});

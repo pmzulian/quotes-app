@@ -3,9 +3,6 @@
 // import { setFavorite } from '../slices/dataSlice';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { deleteQuote } from '../service';
-import { Card, Popconfirm, message } from "antd";
-import { DeleteOutlined } from "@ant-design/icons";
-import Meta from "antd/es/card/Meta";
 import { StarButton } from './StarButton';
 import './Card.css';
 
@@ -21,48 +18,41 @@ export const QuoteCard: React.FC<QuoteCardProps> = ({
   const { mutate: handleDelete } = useMutation({
     mutationFn: () => deleteQuote(id),
     onSuccess: async () => {
-      message.success('Quote deleted successfully');
-      // Invalidate and refetch quotes
+      // Fix: Custom toast can be implemented later
+      console.log('Quote deleted successfully');
       await queryClient.invalidateQueries({ queryKey: ['quotes'] });
     },
     onError: () => {
-      message.error('Failed to delete quote');
+      // Fix: Custom toast can be implemented later
+      console.error('Failed to delete quote');
     },
   });
 
+  const handleDeleteConfirm = () => {
+    if (window.confirm('Are you sure you want to delete this quote?')) {
+      handleDelete();
+    }
+  };
+
   return isVisible && (
-    <Card
-      title={description}
-      extra={
-        <div style={{ display: 'flex', gap: '8px', alignItems: 'center' }}>
+    <div className="card">
+      <div className="card-header">
+        <h3 className="card-title">{description}</h3>
+        <div className="card-extra">
           <StarButton
             id={id}
             isFavorite={favorite}
           />
-          <Popconfirm
-            title="Delete Quote"
-            description="Are you sure you want to delete this quote?"
-            onConfirm={() => handleDelete()}
-            okText="Yes"
-            cancelText="No"
-          >
-            <div className="delete-button">
-              <DeleteOutlined
-                className="delete-icon"
-                style={{
-                  fontSize: '18px',
-                }}
-              />
-            </div>
-          </Popconfirm>
+          <div className="delete-button" onClick={handleDeleteConfirm}>
+            <span className="delete-icon">🗑️</span>
+          </div>
         </div>
-      }
-      className='Card'
-    >
-      <Meta
-        description={<span style={{ color: '#ffffff' }}>{author}</span>}
-        style={{ textAlign: 'center' }}
-      />
-    </Card>
+      </div>
+      <div className="card-body">
+        <div className="card-meta">
+          <span className="card-author">{author}</span>
+        </div>
+      </div>
+    </div>
   );
 };

@@ -6,11 +6,7 @@ import { fetchQuotes } from './service';
 import { Searcher } from './components/SearchBar';
 import { QuotesList } from './components/List';
 import { NewQuoteForm } from './components/Form';
-import { Layout, Space, Typography, Alert, Row, Col } from 'antd';
 import './App.css';
-
-const { Content } = Layout;
-const { Title } = Typography;
 
 function App() {
   const dispatch = useDispatch();
@@ -46,54 +42,52 @@ function App() {
   const storedQuotes = useSelector((state: RootState) => state.data.quotes);
 
   return (
-    <Layout style={{ minHeight: '100vh' }}>
-      <Content style={{
+    <div className="app-layout" style={{ minHeight: '100vh' }}>
+      <main className="app-content" style={{
         padding: '50px',
         display: 'flex',
         flexDirection: 'column',
         alignItems: 'center'
       }}>
-        <Space direction="vertical" size="large" style={{ width: '100%' }}>
-          <Title level={1} style={{ textAlign: 'center', margin: 0 }}>Quotes</Title>
+        <div className="app-space">
+          <h1 className="app-title" style={{ textAlign: 'center', margin: 0 }}>Quotes</h1>
           <NewQuoteForm />
           <Searcher />
-          <Row justify="center">
-            <Col span={12} className='alert'>
+          <div className="alert-container" style={{ display: 'flex', justifyContent: 'center' }}>
+            <div className="alert-wrapper" style={{ width: '50%' }}>
               {isLoading && (
-                <Alert
-                  message="Loading quotes..."
-                  type="info"
-                  showIcon
-                />
+                <div className="alert alert-info">
+                  <span className="alert-icon">ℹ️</span>
+                  <span className="alert-message">Loading quotes...</span>
+                </div>
               )}
               {error && (
-                <Alert
-                  message="Error"
-                  description="Failed to load quotes. Please try again later."
-                  type="error"
-                  showIcon
-                />
+                <div className="alert alert-error">
+                  <span className="alert-icon">❌</span>
+                  <div className="alert-content">
+                    <span className="alert-message">Error</span>
+                    <p className="alert-description">Failed to load quotes. Please try again later.</p>
+                  </div>
+                </div>
               )}
               {showUpdatingAlert && !isLoading && (
-                <Alert
-                  message="Updating quotes..."
-                  type="info"
-                  showIcon
-                />
+                <div className="alert alert-info">
+                  <span className="alert-icon">ℹ️</span>
+                  <span className="alert-message">Updating quotes...</span>
+                </div>
               )}
               {isSuccess && !isFetching && storedQuotes && storedQuotes.length === 0 && (
-                <Alert
-                  message="No quotes found"
-                  type="warning"
-                  showIcon
-                />
+                <div className="alert alert-warning">
+                  <span className="alert-icon">⚠️</span>
+                  <span className="alert-message">No quotes found</span>
+                </div>
               )}
-            </Col>
-          </Row>
+            </div>
+          </div>
           {storedQuotes && storedQuotes.length > 0 && <QuotesList quotes={storedQuotes} />}
-        </Space>
-      </Content>
-    </Layout>
+        </div>
+      </main>
+    </div>
   );
 }
 

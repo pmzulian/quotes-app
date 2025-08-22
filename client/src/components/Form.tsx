@@ -1,8 +1,9 @@
-import { Form, Input, Button, Switch, message } from 'antd';
+import { useState } from 'react';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { addNewQuote } from '../service';
 import { useDispatch } from 'react-redux';
 import { setQuotes } from '../slices/dataSlice';
+import './Form.css';
 
 interface QuoteFormData {
   description: string;
@@ -11,67 +12,108 @@ interface QuoteFormData {
 }
 
 export const NewQuoteForm: React.FC = () => {
-  const [form] = Form.useForm();
+  const [formData, setFormData] = useState<QuoteFormData>({
+    description: '',
+    author: '',
+    favorite: false
+  });
   const queryClient = useQueryClient();
   const dispatch = useDispatch();
 
   const { mutate, isPending } = useMutation({
     mutationFn: addNewQuote,
     onSuccess: async () => {
-      message.success('Quote added successfully');
-      form.resetFields();
+      // Fix: Custom toast can be implemented later
+      console.log('Quote added successfully');
+      // Reset form
+      setFormData({
+        description: '',
+        author: '',
+        favorite: false
+      });
       // Invalidate and refetch quotes
       await queryClient.invalidateQueries({ queryKey: ['quotes'] });
       const updatedQuotes = await queryClient.fetchQuery<QuoteCardProps[]>({ queryKey: ['quotes'] });
       dispatch(setQuotes(updatedQuotes));
     },
     onError: () => {
-      message.error('Failed to add quote');
+      // Fix: Custom toast can be implemented later
+      console.error('Failed to add quote');
     },
   });
 
-  const onFinish = (values: QuoteFormData) => {
-    mutate(values);
+  const onFinish = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (formData.description.trim() && formData.author.trim()) {
+      mutate(formData);
+    }
+  };
+
+  const handleInputChange = (field: keyof QuoteFormData, value: string | boolean) => {
+    setFormData(prev => ({
+      ...prev,
+      [field]: value
+    }));
   };
 
   return (
-    <Form
-      form={form}
+    <form
       name="newQuote"
-      onFinish={onFinish}
-      layout="vertical"
-      style={{ maxWidth: 600, margin: '0 auto' }}
+      onSubmit={onFinish}
+      className="quote-form"
     >
-      <Form.Item
-        name="description"
-        label="Quote"
-        rules={[{ required: true, message: 'Please input your quote' }]}
-      >
-        <Input.TextArea rows={4} placeholder="Enter your quote here" />
-      </Form.Item>
+      <div className="form-item">
+        <label htmlFor="description" className="form-label">Quote</label>
+        <textarea
+          id="description"
+          name="description"
+          rows={4}
+          placeholder="Enter your quote here"
+          value={formData.description}
+          onChange={(e) => handleInputChange('description', e.target.value)}
+          required
+          className="form-textarea"
+        />
+      </div>
 
-      <Form.Item
-        name="author"
-        label="Author"
-        rules={[{ required: true, message: 'Please input the author' }]}
-      >
-        <Input placeholder="Enter the author's name" />
-      </Form.Item>
+      <div className="form-item">
+        <label htmlFor="author" className="form-label">Author</label>
+        <input
+          id="author"
+          name="author"
+          type="text"
+          placeholder="Enter the author's name"
+          value={formData.author}
+          onChange={(e) => handleInputChange('author', e.target.value)}
+          required
+          className="form-input"
+        />
+      </div>
 
-      <Form.Item
-        name="favorite"
-        label="Favorite"
-        valuePropName="checked"
-        initialValue={false}
-      >
-        <Switch />
-      </Form.Item>
+      <div className="form-item">
+        <label htmlFor="favorite" className="form-label">Favorite</label>
+        <div className="form-switch">
+          <input
+            id="favorite"
+            name="favorite"
+            type="checkbox"
+            checked={formData.favorite}
+            onChange={(e) => handleInputChange('favorite', e.target.checked)}
+            className="form-checkbox"
+          />
+          <span className="switch-label">{formData.favorite ? 'Yes' : 'No'}</span>
+        </div>
+      </div>
 
-      <Form.Item>
-        <Button type="primary" htmlType="submit" loading={isPending}>
-          Add Quote
-        </Button>
-      </Form.Item>
-    </Form>
+      <div className="form-item">
+        <button
+          type="submit"
+          disabled={isPending}
+          className="form-button"
+        >
+          {isPending ? 'Adding...' : 'Add Quote'}
+        </button>
+      </div>
+    </form>
   );
 };
