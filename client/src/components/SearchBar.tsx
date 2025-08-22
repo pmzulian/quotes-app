@@ -1,4 +1,4 @@
-import { useCallback } from 'react';
+import { useCallback, useState } from 'react';
 import { debounce } from 'lodash';
 import { useDispatch } from 'react-redux';
 import { setSelected } from '../slices/dataSlice';
@@ -6,10 +6,11 @@ import './SearchBar.css';
 
 export const Searcher = () => {
   const dispatch = useDispatch();
+  const [searchTerm, setSearchTerm] = useState(''); // Nuevo estado para el término de búsqueda
 
   const debouncedSearch = useCallback(
-    debounce((searchTerm: string) => {
-      dispatch(setSelected(searchTerm));
+    debounce((value: string) => {
+      dispatch(setSelected(value));
     }, 300),
     [dispatch]
   );
@@ -19,7 +20,13 @@ export const Searcher = () => {
   };
 
   const handleClear = () => {
+    setSearchTerm(''); // Limpiar el estado del input
     dispatch(setSelected(''));
+  };
+
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setSearchTerm(e.target.value);
+    handleSearch(e.target.value); // Llamar a handleSearch en cada cambio para el debounce
   };
 
   return (
@@ -27,7 +34,8 @@ export const Searcher = () => {
       <input
         type="text"
         placeholder="Search Quotes"
-        onChange={(e) => handleSearch(e.target.value)}
+        value={searchTerm}
+        onChange={handleChange}
         className="search-input"
       />
       <button 
@@ -41,10 +49,7 @@ export const Searcher = () => {
       <button 
         type="button" 
         className="search-button"
-        onClick={() => {
-          const input = document.querySelector('.search-input') as HTMLInputElement;
-          if (input) handleSearch(input.value);
-        }}
+        onClick={() => handleSearch(searchTerm)}
       >
         Search
       </button>
