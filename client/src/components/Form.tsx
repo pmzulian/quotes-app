@@ -101,7 +101,7 @@ export const NewQuoteForm: React.FC = () => {
             onChange={(e) => handleInputChange('favorite', e.target.checked)}
             className="form-checkbox"
           />
-          <span className="switch-label">{formData.favorite ? 'Yes' : 'No'}</span>
+          <span className="switch-label" style={{ color: '#d1d8df' }}>{formData.favorite ? 'Yes' : 'No'}</span>
         </div>
       </div>
 

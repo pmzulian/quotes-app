@@ -9,7 +9,7 @@
   justify-self: center;
   align-self: center;
   box-sizing: border-box;
-  justify-items: center;
+  /* justify-items: center; */
 }
 
 .quotes-list:has(> :nth-child(3):last-child) {
@@ -30,7 +30,7 @@
 @media (min-width: 1200px) {
   .quotes-list {
     grid-template-columns: repeat(4, 1fr);
-    justify-items: center;
+    /* justify-items: center; */
   }
 }
 

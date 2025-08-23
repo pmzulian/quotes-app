@@ -45,7 +45,7 @@ function App() {
     <div className="app-layout" style={{ minHeight: '100vh' }}>
       <main className="app-content">
         <div className="app-space">
-          <h1 className="app-title" style={{ textAlign: 'center', margin: 0 }}>Quotes</h1>
+          <h1 className="app-title">Quotes</h1>
           <NewQuoteForm />
           <Searcher />
           <div className="alert-container">
