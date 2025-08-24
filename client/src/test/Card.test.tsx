@@ -50,7 +50,7 @@ describe('QuoteCard', () => {
     const deleteQuoteMock = vi.mocked(serviceModule.deleteQuote);
     deleteQuoteMock.mockResolvedValue({});
 
-    // Mock window.confirm to always return true
+    // Mock window.confirm
     vi.stubGlobal('confirm', () => true);
 
     renderCard();

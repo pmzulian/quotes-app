@@ -1,4 +1,4 @@
-import { memo } from "react";
+import { memo, useMemo } from "react";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { updateFavorite } from "../service";
 import FillStar from '../assets/fillStar.svg';
@@ -11,8 +11,10 @@ interface StarButtonProps {
 
 export const StarButton: React.FC<StarButtonProps> = memo(({ id, isFavorite }) => {
   const queryClient = useQueryClient();
-  // const icon = isFavorite ? "⭐" : "☆";
-  const icon = isFavorite ? <img src={FillStar} /> : <img src={emptyStar} />;
+  const icon = useMemo(() =>
+    isFavorite ? <img src={FillStar} alt="Favorite" loading="lazy" />
+      : <img src={emptyStar} alt="Not favorite" loading="lazy" />
+    , [isFavorite]);
 
   const { mutate: handleFavorite } = useMutation({
     mutationFn: () => updateFavorite(id, isFavorite),

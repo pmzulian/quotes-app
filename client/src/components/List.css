@@ -9,7 +9,16 @@
   justify-self: center;
   align-self: center;
   box-sizing: border-box;
-  /* justify-items: center; */
+  /* Añadir transición específica para grid-template-rows */
+  grid-template-rows: auto;
+  transition: all 0.5s ease-in-out;
+}
+
+.quotes-list:empty {
+  min-height: 0;
+  padding: 0;
+  gap: 0;
+  transition: all 0.5s ease-in-out;
 }
 
 .quotes-list:has(> :nth-child(3):last-child) {

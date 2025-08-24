@@ -15,5 +15,9 @@ export default defineConfig({
     },
     testTimeout: 10000,
     hookTimeout: 10000,
+    coverage: {
+      provider: 'istanbul',
+      reporter: ['text', 'json', 'html'],
+    },
   },
 });

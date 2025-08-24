@@ -93,7 +93,7 @@ describe('Searcher Component', () => {
     vi.advanceTimersByTime(300); // Para que el debounce se complete
 
     expect(mockDispatch).toHaveBeenCalledTimes(1);
-    expect(mockDispatch).toHaveBeenCalledWith(setSelected('Tst search'));
+    expect(mockDispatch).toHaveBeenCalledWith(setSelected('Test search'));
   });
 
   it('Should debounce input changes and dispatch setSelected after delay', async () => {

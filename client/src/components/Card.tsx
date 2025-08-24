@@ -1,4 +1,4 @@
-// import { useCallback } from 'react';
+import { memo } from 'react';
 // import { useDispatch } from 'react-redux';
 // import { setFavorite } from '../slices/dataSlice';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
@@ -6,7 +6,7 @@ import { deleteQuote } from '../service';
 import { StarButton } from './StarButton';
 import './Card.css';
 
-export const QuoteCard: React.FC<QuoteCardProps> = ({
+export const QuoteCard: React.FC<QuoteCardProps> = memo(({
   id,
   description,
   author,
@@ -55,4 +55,4 @@ export const QuoteCard: React.FC<QuoteCardProps> = ({
       </div>
     </div>
   );
-};
+});
